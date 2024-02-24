@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 .split("\n")
                 .filter((line) => line.trim() !== "")
                 .map((line) => {
-                    const parts = line.split(",");
+                    const parts = line.split("|");
                     // Ensure that both emoji and name exist; use a placeholder if necessary
                     const emoji = parts[0].trim();
                     const name =
