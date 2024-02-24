@@ -1,8 +1,11 @@
+let emojis = []; // Declare the emojis array at a higher scope
+
 document.addEventListener("DOMContentLoaded", function () {
     fetch("emojis.txt")
         .then((response) => response.text())
         .then((data) => {
-            const emojis = data.split("\n").map((line) => {
+            emojis = data.split("\n").map((line) => {
+                // Assign the fetched and processed emojis here
                 const [emoji, name] = line.split(",");
                 return { emoji, name };
             });
@@ -13,7 +16,7 @@ document.addEventListener("DOMContentLoaded", function () {
     searchInput.addEventListener("input", function () {
         const searchValue = this.value.toLowerCase();
         const filteredEmojis = emojis.filter((emoji) =>
-            emoji.name.includes(searchValue)
+            emoji.name.toLowerCase().includes(searchValue)
         );
         displayEmojis(filteredEmojis);
     });
@@ -21,7 +24,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 function displayEmojis(emojis) {
     const container = document.getElementById("emojiContainer");
-    container.innerHTML = "";
+    container.innerHTML = ""; // Clear previous emojis
     emojis.forEach(({ emoji, name }) => {
         const emojiBox = document.createElement("div");
         emojiBox.className = "emoji-box";
