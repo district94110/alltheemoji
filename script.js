@@ -4,10 +4,17 @@ document.addEventListener("DOMContentLoaded", function () {
     fetch("emojis.txt")
         .then((response) => response.text())
         .then((data) => {
-            emojis = data.split("\n").map((line) => {
-                const [emoji, name] = line.split(",");
-                return { emoji, name };
-            });
+            emojis = data
+                .split("\n")
+                .filter((line) => line.trim() !== "")
+                .map((line) => {
+                    const parts = line.split(",");
+                    // Ensure that both emoji and name exist; use a placeholder if necessary
+                    const emoji = parts[0].trim();
+                    const name =
+                        parts.length > 1 ? parts[1].trim() : "Unnamed Emoji";
+                    return { emoji, name };
+                });
             displayEmojis(emojis);
             attachSearchListener(); // Attach the search listener only after emojis are loaded
         });
@@ -17,8 +24,9 @@ function attachSearchListener() {
     const searchInput = document.getElementById("emojiSearch");
     searchInput.addEventListener("input", function () {
         const searchValue = this.value.toLowerCase();
-        const filteredEmojis = emojis.filter((emoji) =>
-            emoji.name.toLowerCase().includes(searchValue)
+        const filteredEmojis = emojis.filter(
+            (emoji) =>
+                emoji.name && emoji.name.toLowerCase().includes(searchValue)
         );
         displayEmojis(filteredEmojis);
     });
