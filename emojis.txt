@@ -1,0 +1,5 @@
+😀,Grinning Face
+😃,Grinning Face with Big Eyes
+😄,Grinning Face with Smiling Eyes
+😁,Beaming Face with Smiling Eyes
+😆,Grinning Squinting Face

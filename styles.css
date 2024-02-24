@@ -1,0 +1,43 @@
+body {
+    font-family: "Roboto", sans-serif;
+    background-color: #f0eae2;
+    padding: 20px;
+    margin: 0;
+}
+
+.search-container {
+    margin-bottom: 20px;
+}
+
+#emojiSearch {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+.emoji-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+    gap: 10px;
+}
+
+.emoji-box {
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.emoji {
+    font-size: 24px;
+}
+
+.emoji-name {
+    font-size: 14px;
+}
