@@ -83,7 +83,7 @@ function attachSearchListener() {
 
 function setEmojiBackground(emoji, emojiDiv) {
     const canvas = document.createElement("canvas");
-    const size = 128; // Size for the canvas
+    const size = 128;
     canvas.width = size;
     canvas.height = size;
 
@@ -93,19 +93,19 @@ function setEmojiBackground(emoji, emojiDiv) {
     ctx.fillText(emoji, 0, 0);
 
     const imageData = ctx.getImageData(0, 0, size, size);
-    const colorCounts = {}; // Object to hold color frequency
+    const colorCounts = {};
     let maxCount = 0;
     let dominantColor = null;
 
     for (let i = 0; i < imageData.data.length; i += 4) {
-        // Skip transparent pixels
         if (imageData.data[i + 3] > 0) {
+            // Skip fully transparent pixels
             const color = `${imageData.data[i]}-${imageData.data[i + 1]}-${
                 imageData.data[i + 2]
             }`;
             colorCounts[color] = (colorCounts[color] || 0) + 1;
 
-            if (colorCounts[color] >= maxCount) {
+            if (colorCounts[color] > maxCount) {
                 maxCount = colorCounts[color];
                 dominantColor = color;
             }
@@ -114,9 +114,9 @@ function setEmojiBackground(emoji, emojiDiv) {
 
     if (dominantColor) {
         const [r, g, b] = dominantColor.split("-").map((n) => parseInt(n, 10));
-        // Adjust the color to be lighter if needed
-        const lighterColor = makeLighterPercentage(r, g, b, 50);
-        emojiDiv.style.backgroundColor = lighterColor;
+        // Create RGBA color with 80% transparency
+        const lighterColorRGBA = `rgba(${r}, ${g}, ${b}, 0.2)`;
+        emojiDiv.style.backgroundColor = lighterColorRGBA;
     }
 }
 
@@ -144,13 +144,4 @@ function displayEmojis(emojis) {
                 );
         });
     });
-}
-
-function makeLighterPercentage(r, g, b, percentage = 30) {
-    const factor = (100 + percentage) / 100;
-    return {
-        r: Math.min(255, Math.round(r * factor)),
-        g: Math.min(255, Math.round(g * factor)),
-        b: Math.min(255, Math.round(b * factor))
-    };
 }
