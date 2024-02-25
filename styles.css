@@ -19,6 +19,15 @@ body {
     border: 1px solid #ccc;
 }
 
+#randomizeButton {
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    cursor: pointer;
+    margin-left: 10px; /* Add space between the search box and the button */
+}
+
 .emoji-container {
     display: grid;
     grid-template-columns: repeat(
