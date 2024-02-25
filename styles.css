@@ -37,6 +37,16 @@ body {
     justify-content: center;
 }
 
+.emoji-box {
+    /* Existing styles */
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Add smooth transition for transform and box-shadow */
+}
+
+.emoji-box:hover {
+    transform: scale(1.05); /* Slightly scale up the emoji box on hover */
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2); /* Add more shadow to create a depth effect */
+}
+
 .emoji {
     font-size: 48px; /* Increased font size for emojis */
 }
@@ -46,3 +56,4 @@ body {
     text-align: center; /* Center align the names */
     margin-top: 5px; /* Add some space between the emoji and the name */
 }
+
