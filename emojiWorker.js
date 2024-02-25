@@ -33,7 +33,7 @@ self.addEventListener(
                 .split("-")
                 .map((n) => parseInt(n, 10));
             // Send the dominant color back to the main thread
-            self.postMessage({ emoji, color: `rgba(${r}, ${g}, ${b}, 0.2)` });
+            self.postMessage({ emoji, color: `rgba(${r}, ${g}, ${b}, 0.3)` });
         }
     },
     false
