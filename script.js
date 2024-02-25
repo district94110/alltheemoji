@@ -115,10 +115,10 @@ function setEmojiBackground(emoji, emojiDiv) {
     if (dominantColor) {
         const [r, g, b] = dominantColor.split("-").map((n) => parseInt(n, 10));
         // Adjust the color to be lighter if needed
-        const lighterColor = `rgb(${Math.min(255, r + 200)}, ${Math.min(
+        const lighterColor = `rgb(${Math.min(255, r + 20)}, ${Math.min(
             255,
-            g + 200
-        )}, ${Math.min(255, b + 200)})`;
+            g + 20
+        )}, ${Math.min(255, b + 20)})`;
         emojiDiv.style.backgroundColor = lighterColor;
     }
 }
