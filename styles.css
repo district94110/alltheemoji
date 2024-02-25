@@ -43,7 +43,7 @@ body {
 }
 
 .emoji-box:hover {
-    transform: scale(1.1); /* Slightly scale up the emoji box on hover */
+    transform: scale(3); /* Slightly scale up the emoji box on hover */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add more shadow to create a depth effect */
 }
 
