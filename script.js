@@ -115,10 +115,7 @@ function setEmojiBackground(emoji, emojiDiv) {
     if (dominantColor) {
         const [r, g, b] = dominantColor.split("-").map((n) => parseInt(n, 10));
         // Adjust the color to be lighter if needed
-        const lighterColor = `rgb(${Math.min(255, r + 20)}, ${Math.min(
-            255,
-            g + 20
-        )}, ${Math.min(255, b + 20)})`;
+        const lighterColor = makeLighterPercentage(r, g, b, 50);
         emojiDiv.style.backgroundColor = lighterColor;
     }
 }
@@ -147,4 +144,13 @@ function displayEmojis(emojis) {
                 );
         });
     });
+}
+
+function makeLighterPercentage(r, g, b, percentage = 30) {
+    const factor = (100 + percentage) / 100;
+    return {
+        r: Math.min(255, Math.round(r * factor)),
+        g: Math.min(255, Math.round(g * factor)),
+        b: Math.min(255, Math.round(b * factor))
+    };
 }
