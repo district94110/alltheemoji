@@ -83,43 +83,44 @@ function attachSearchListener() {
 
 function setEmojiBackground(emoji, emojiDiv) {
     const canvas = document.createElement("canvas");
-    const size = 128; // Adjust size as needed
+    const size = 128; // Size for the canvas
     canvas.width = size;
     canvas.height = size;
 
     const ctx = canvas.getContext("2d");
-    ctx.fillStyle = "white"; // Optional: Fill background to improve color calculation
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
     ctx.textBaseline = "top";
-    ctx.font = `${size}px Arial`; // Adjust font size and family as needed
+    ctx.font = `${size}px Arial`;
     ctx.fillText(emoji, 0, 0);
 
     const imageData = ctx.getImageData(0, 0, size, size);
-    let total = { r: 0, g: 0, b: 0, count: 0 };
+    const colorCounts = {}; // Object to hold color frequency
+    let maxCount = 0;
+    let dominantColor = null;
 
     for (let i = 0; i < imageData.data.length; i += 4) {
+        // Skip transparent pixels
         if (imageData.data[i + 3] > 0) {
-            // Ignore fully transparent pixels
-            total.r += imageData.data[i];
-            total.g += imageData.data[i + 1];
-            total.b += imageData.data[i + 2];
-            total.count++;
+            const color = `${imageData.data[i]}-${imageData.data[i + 1]}-${
+                imageData.data[i + 2]
+            }`;
+            colorCounts[color] = (colorCounts[color] || 0) + 1;
+
+            if (colorCounts[color] > maxCount) {
+                maxCount = colorCounts[color];
+                dominantColor = color;
+            }
         }
     }
 
-    if (total.count === 0) return; // If no pixels were analyzed, exit the function
-
-    const average = {
-        r: total.r / total.count,
-        g: total.g / total.count,
-        b: total.b / total.count
-    };
-
-    const lighterColor = `rgb(${Math.min(255, average.r + 100)}, ${Math.min(
-        255,
-        average.g + 100
-    )}, ${Math.min(255, average.b + 100)})`;
-    emojiDiv.style.backgroundColor = lighterColor;
+    if (dominantColor) {
+        const [r, g, b] = dominantColor.split("-").map((n) => parseInt(n, 10));
+        // Adjust the color to be lighter if needed
+        const lighterColor = `rgb(${Math.min(255, r + 100)}, ${Math.min(
+            255,
+            g + 100
+        )}, ${Math.min(255, b + 100)})`;
+        emojiDiv.style.backgroundColor = lighterColor;
+    }
 }
 
 function displayEmojis(emojis) {
