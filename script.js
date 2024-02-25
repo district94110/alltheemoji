@@ -105,7 +105,7 @@ function setEmojiBackground(emoji, emojiDiv) {
             }`;
             colorCounts[color] = (colorCounts[color] || 0) + 1;
 
-            if (colorCounts[color] > maxCount) {
+            if (colorCounts[color] >= maxCount) {
                 maxCount = colorCounts[color];
                 dominantColor = color;
             }
@@ -115,10 +115,10 @@ function setEmojiBackground(emoji, emojiDiv) {
     if (dominantColor) {
         const [r, g, b] = dominantColor.split("-").map((n) => parseInt(n, 10));
         // Adjust the color to be lighter if needed
-        const lighterColor = `rgb(${Math.min(255, r + 100)}, ${Math.min(
+        const lighterColor = `rgb(${Math.min(255, r + 200)}, ${Math.min(
             255,
-            g + 100
-        )}, ${Math.min(255, b + 100)})`;
+            g + 200
+        )}, ${Math.min(255, b + 200)})`;
         emojiDiv.style.backgroundColor = lighterColor;
     }
 }
