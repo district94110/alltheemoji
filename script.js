@@ -1,3 +1,48 @@
+// Initialize the Web Worker
+let emojiWorker;
+if (window.Worker) {
+    emojiWorker = new Worker("emojiWorker.js");
+
+    emojiWorker.addEventListener("message", function (e) {
+        const { emoji, color } = e.data;
+        // Find the emoji div by emoji character and set the background color
+        const emojiDivs = document.querySelectorAll(".emoji-box");
+        emojiDivs.forEach((div) => {
+            if (div.querySelector(".emoji").textContent === emoji) {
+                div.style.backgroundColor = color;
+            }
+        });
+    });
+}
+
+function displayEmojis(emojis) {
+    const container = document.getElementById("emojiContainer");
+    container.innerHTML = ""; // Clear previous emojis
+    emojis.forEach(({ emoji, name }) => {
+        const emojiBox = document.createElement("div");
+        emojiBox.className = "emoji-box";
+        emojiBox.innerHTML = `<div class="emoji">${emoji}</div><div class="emoji-name">${name}</div>`;
+        container.appendChild(emojiBox);
+
+        // Send emoji to the Web Worker for background color processing
+        if (emojiWorker) {
+            emojiWorker.postMessage({ emoji, size: 128 });
+        }
+
+        // Existing click event listener to copy emoji
+        emojiBox.addEventListener("click", function () {
+            navigator.clipboard
+                .writeText(emoji)
+                .then(() => {
+                    // Copy feedback mechanism (e.g., show/hide a popup)
+                })
+                .catch((err) =>
+                    console.error("Error copying emoji to clipboard", err)
+                );
+        });
+    });
+}
+
 let emojis = []; // Ensure emojis is accessible globally
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -80,68 +125,3 @@ function attachSearchListener() {
         });
     });
 }*/
-
-function setEmojiBackground(emoji, emojiDiv) {
-    const canvas = document.createElement("canvas");
-    const size = 128;
-    canvas.width = size;
-    canvas.height = size;
-
-    const ctx = canvas.getContext("2d");
-    ctx.textBaseline = "top";
-    ctx.font = `${size}px Arial`;
-    ctx.fillText(emoji, 0, 0);
-
-    const imageData = ctx.getImageData(0, 0, size, size);
-    const colorCounts = {};
-    let maxCount = 0;
-    let dominantColor = null;
-
-    for (let i = 0; i < imageData.data.length; i += 4) {
-        if (imageData.data[i + 3] > 0) {
-            // Skip fully transparent pixels
-            const color = `${imageData.data[i]}-${imageData.data[i + 1]}-${
-                imageData.data[i + 2]
-            }`;
-            colorCounts[color] = (colorCounts[color] || 0) + 1;
-
-            if (colorCounts[color] > maxCount) {
-                maxCount = colorCounts[color];
-                dominantColor = color;
-            }
-        }
-    }
-
-    if (dominantColor) {
-        const [r, g, b] = dominantColor.split("-").map((n) => parseInt(n, 10));
-        // Create RGBA color with 80% transparency
-        const lighterColorRGBA = `rgba(${r}, ${g}, ${b}, 0.2)`;
-        emojiDiv.style.backgroundColor = lighterColorRGBA;
-    }
-}
-
-function displayEmojis(emojis) {
-    const container = document.getElementById("emojiContainer");
-    container.innerHTML = ""; // Clear previous emojis
-    emojis.forEach(({ emoji, name }) => {
-        const emojiBox = document.createElement("div");
-        emojiBox.className = "emoji-box";
-        emojiBox.innerHTML = `<div class="emoji">${emoji}</div><div class="emoji-name">${name}</div>`;
-        container.appendChild(emojiBox);
-
-        // Set background color based on the emoji
-        setEmojiBackground(emoji, emojiBox);
-
-        // Add event listeners for other interactions (e.g., copying to clipboard)
-        emojiBox.addEventListener("click", function () {
-            navigator.clipboard
-                .writeText(emoji)
-                .then(() => {
-                    // Implement the copy feedback mechanism here
-                })
-                .catch((err) =>
-                    console.error("Error copying emoji to clipboard", err)
-                );
-        });
-    });
-}
