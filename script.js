@@ -56,22 +56,23 @@ function displayEmojis(emojis) {
     emojis.forEach(({ emoji, name }) => {
         const emojiBox = document.createElement("div");
         emojiBox.className = "emoji-box";
-        emojiBox.innerHTML = `<div class="emoji">${emoji}</div><div class="emoji-name">${name}</div><div class="tooltip">Copied to clipboard</div>`;
+        emojiBox.innerHTML = `<div class="emoji">${emoji}</div><div class="emoji-name">${name}</div>`;
 
         container.appendChild(emojiBox);
 
-        // Add click event listener to show tooltip and copy emoji
+        // Add click event listener to copy emoji and show popup
         emojiBox.addEventListener("click", function () {
-            const tooltip = this.querySelector(".tooltip");
             navigator.clipboard
                 .writeText(emoji)
                 .then(() => {
-                    tooltip.style.visibility = "visible";
-                    tooltip.style.opacity = "1";
+                    // Show popup
+                    const popup = document.getElementById("copyPopup");
+                    popup.className = "copy-popup fade-in";
+
+                    // Hide popup after 2 seconds
                     setTimeout(() => {
-                        tooltip.style.opacity = "0";
-                        tooltip.style.visibility = "hidden";
-                    }, 2000); // Hide tooltip after 2 seconds
+                        popup.className = "copy-popup fade-out";
+                    }, 2000);
                 })
                 .catch((err) =>
                     console.error("Error copying emoji to clipboard", err)
