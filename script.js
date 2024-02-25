@@ -46,7 +46,7 @@ function displayEmojis(emojis) {
 let emojis = []; // Ensure emojis is accessible globally
 
 document.addEventListener("DOMContentLoaded", function () {
-    fetch("emojis.txt")
+    fetch("unique-emojis.txt")
         .then((response) => response.text())
         .then((data) => {
             emojis = data
