@@ -7,7 +7,9 @@ body {
 
 .search-container {
     margin: 20px;
-    align-content: center;
+    display: flex; /* Makes the container a flexbox */
+    justify-content: center; /* Centers the flex items (the search bar)
+
 }
 
 #emojiSearch {
