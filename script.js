@@ -85,13 +85,17 @@ function shuffleArray(array) {
 
 function attachSearchListener() {
     const searchInput = document.getElementById("emojiSearch");
+    let debounceTimer;
     searchInput.addEventListener("input", function () {
-        const searchValue = this.value.toLowerCase();
-        const filteredEmojis = emojis.filter(
-            (emoji) =>
-                emoji.name && emoji.name.toLowerCase().includes(searchValue)
-        );
-        displayEmojis(filteredEmojis);
+        clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(() => {
+            const searchValue = this.value.toLowerCase();
+            const filteredEmojis = emojis.filter(
+                (emoji) =>
+                    emoji.name && emoji.name.toLowerCase().includes(searchValue)
+            );
+            displayEmojis(filteredEmojis);
+        }, 300); // Adjust debounce time as needed
     });
 }
 
